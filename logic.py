@@ -32,24 +32,24 @@ class Download:
         for section in sections:
             count+=section.count
             try:
-                os.mkdir(os.path.join(self.path,section['title']))
+                os.mkdir(os.path.join(self.path,section.title))
             except:pass
         main_file.write(json.dumps(sections,cls=CustomJSONEncored))
         main_file.close()
         for section in sections:
-            participants = self.psuti.get_all_participants(section['url'])
-            file = open(os.path.join(self.path,section['title'],"psuti_section_config.json"),"w")
+            participants = self.psuti.get_all_participants(section.url)
+            file = open(os.path.join(self.path,section.title,"psuti_section_config.json"),"w")
             file.write(json.dumps(participants,cls=CustomJSONEncored))
             file.close()
             full_data = []
             for participant in participants:
                 if(self.stopped):return end()
-                participant_data = self.psuti.get_participant(participant['url'])
+                participant_data = self.psuti.get_participant(participant.url)
                 full_data.append(participant_data)
-                self.psuti.download(participant_data['document']['url'],os.path.join(self.path,section['title'],participant_data['document']['title']))
+                self.psuti.download(participant_data.document.url,os.path.join(self.path,section.title,participant_data.document.title))
                 now_count+=1
                 func(now_count,count)
-            file = open(os.path.join(self.path,section['title'],"psuti_section_config_full.json"),"w")
+            file = open(os.path.join(self.path,section.title,"psuti_section_config_full.json"),"w")
             file.write(json.dumps(full_data,cls=CustomJSONEncored))
             file.close()
         end()
